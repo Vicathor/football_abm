@@ -47,6 +47,12 @@ Thumbs.db
 *.xlsx
 *.json
 
+# Process mining outputs
+*.xes
+football_process_map.png
+football_analysis_report.md
+tactical_dashboard_*.html
+
 # Logs
 *.log
 
