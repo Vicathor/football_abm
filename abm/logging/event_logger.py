@@ -166,5 +166,28 @@ class FootballEventLogger:
     
     def export_to_xes(self, filename: str):
         """Export events to XES format for PM4Py"""
-        # TODO: Implement XES export
-        pass
+        try:
+            import pm4py
+            
+            # Prepare dataframe for XES
+            df_xes = self.get_dataframe().copy()
+            
+            # Convert timestamp to datetime
+            df_xes['time:timestamp'] = pd.to_datetime(df_xes['timestamp'], unit='ms')
+            
+            # Format for PM4Py
+            event_log = pm4py.format_dataframe(
+                df_xes,
+                case_id='case_id',
+                activity_key='activity',
+                timestamp_key='time:timestamp'
+            )
+            
+            # Export to XES
+            pm4py.write_xes(event_log, filename)
+            print(f"Successfully exported to XES: {filename}")
+            
+        except ImportError:
+            print("PM4Py not installed. Run: pip install pm4py")
+        except Exception as e:
+            print(f"Error exporting to XES: {e}")
